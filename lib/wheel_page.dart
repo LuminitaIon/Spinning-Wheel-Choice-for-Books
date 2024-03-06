@@ -55,23 +55,37 @@ class WheelPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AddItemDialog(),
-                    );
-                  },
-                  tooltip: 'Add Item',
-                  child: Icon(Icons.add),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AddItemDialog(),
+                        );
+                      },
+                      tooltip: 'Add Item',
+                      child: Icon(Icons.add),
+                    ),
+                    SizedBox(height: 8),
+                    Text('Add Item'),
+                  ],
                 ),
                 SizedBox(width: 20),
-                FloatingActionButton(
-                  onPressed: () {
-                    context.read<WheelCubit>().spinWheel();
-                  },
-                  tooltip: 'Spin Wheel',
-                  child: Icon(Icons.rotate_left),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        context.read<WheelCubit>().spinWheel();
+                      },
+                      tooltip: 'Spin Wheel',
+                      child: Icon(Icons.rotate_left),
+                    ),
+                    SizedBox(height: 8),
+                    Text('Spin the Wheel')
+                  ],
                 ),
               ],
             ),
