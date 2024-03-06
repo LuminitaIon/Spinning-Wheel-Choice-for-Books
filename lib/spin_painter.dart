@@ -15,7 +15,7 @@ class SpinPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double radius = size.width / 2;
+    final double radius = size.width * 0.7;
     final double centerX = size.width / 2;
     final double centerY = size.height / 2;
     final double angle = 2 * pi / items.length;
@@ -35,7 +35,7 @@ class SpinPainter extends CustomPainter {
       TextSpan span = TextSpan(
         style: TextStyle(
           color: Colors.black,
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: FontWeight.w500,
         ),
         text: items[0],
@@ -90,7 +90,7 @@ class SpinPainter extends CustomPainter {
         TextSpan span = TextSpan(
           style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
           text: items[i],
