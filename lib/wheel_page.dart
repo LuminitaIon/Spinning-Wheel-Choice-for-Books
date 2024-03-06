@@ -9,8 +9,17 @@ class WheelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffffe3e3),
       appBar: AppBar(
-        title: Text('Books Spinning Wheel'),
+        backgroundColor: Color(0xffffe3e3),
+        title: Text(
+          'Books Spinning Wheel',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -19,7 +28,24 @@ class WheelPage extends StatelessWidget {
             child: Center(
               child: BlocBuilder<WheelCubit, List<String>>(
                 builder: (context, state) {
-                  return SpinWheel(items: state);
+                  if (state.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Add items to spin the wheel',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    );
+                  } else {
+                    return SpinWheel(
+                      items: state,
+                      colors: List.generate(
+                        state.length,
+                        (index) =>
+                            Colors.primaries[index % Colors.primaries.length],
+                      ),
+                      backgroundColor: Colors.grey,
+                    );
+                  }
                 },
               ),
             ),

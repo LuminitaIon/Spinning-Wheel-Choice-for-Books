@@ -3,8 +3,10 @@ import 'package:spinning_wheel/spin_painter.dart';
 
 class SpinWheel extends StatelessWidget {
   final List<String> items;
+  final List<Color> colors;
+  final Color backgroundColor;
 
-  const SpinWheel({required this.items});
+  const SpinWheel({required this.items, required this.colors, required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class SpinWheel extends StatelessWidget {
         width: 300,
         height: 300,
         child: CustomPaint(
-          painter: SpinPainter(items: items),
+          painter: SpinPainter(items: items, colors: colors, backgroundColor: backgroundColor),
         ),
       ),
     );

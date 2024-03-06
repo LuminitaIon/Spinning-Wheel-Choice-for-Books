@@ -4,43 +4,43 @@ import 'package:flutter/material.dart';
 
 class SpinPainter extends CustomPainter {
   final List<String> items;
+  final List<Color> colors;
+  final Color backgroundColor;
 
-  const SpinPainter({required this.items});
+  const SpinPainter({
+    required this.items,
+    required this.colors,
+    required this.backgroundColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double radius = size.width * 0.7;
+    final double radius = size.width / 2;
     final double centerX = size.width / 2;
     final double centerY = size.height / 2;
     final double angle = 2 * pi / items.length;
 
-    var paint = Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+    // Draw background color
+    var backgroundPaint = Paint()..color = backgroundColor;
+    canvas.drawCircle(Offset(centerX, centerY), radius, backgroundPaint);
 
-    for (int i = 0; i < items.length; i++) {
-      final double startAngle = i * angle;
-      final double endAngle = (i + 1) * angle;
-      final Rect arcRect = Rect.fromCircle(
-        center: Offset(centerX, centerY),
-        radius: radius,
-      );
+    if (items.length == 1) {
+      // Draw a full circle for a single item
+      var fillPaint = Paint()
+        ..color = colors[0].withOpacity(0.6)
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(Offset(centerX, centerY), radius, fillPaint);
 
-      canvas.drawArc(
-        arcRect,
-        startAngle,
-        endAngle - startAngle,
-        true,
-        paint,
-      );
-
+      // Draw text
       TextSpan span = TextSpan(
-        style: TextStyle(color: Colors.black,),
-        text: items[i],
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+        text: items[0],
       );
       TextPainter tp = TextPainter(
-        maxLines: 3,
         text: span,
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -48,17 +48,73 @@ class SpinPainter extends CustomPainter {
       tp.layout();
 
       // Calculate text position
-      final double textAngle = (startAngle + endAngle) / 2;
-      final double textRadius = radius - tp.height * 3; // Adjusted radius
-      final double textX = centerX + textRadius * cos(textAngle);
-      final double textY = centerY + textRadius * sin(textAngle);
+      final double textX = centerX - tp.width / 2;
+      final double textY = centerY - tp.height / 2;
 
-      // Rotate canvas for text drawing
-      canvas.save();
-      canvas.translate(textX, textY);
-      canvas.rotate(textAngle + pi / 32);
-      tp.paint(canvas, Offset(-tp.width / 2, -tp.height / 2));
-      canvas.restore();
+      tp.paint(canvas, Offset(textX, textY));
+    } else {
+      for (int i = 0; i < items.length; i++) {
+        final double startAngle = i * angle;
+        final double endAngle = (i + 1) * angle;
+        final Rect arcRect = Rect.fromCircle(
+          center: Offset(centerX, centerY),
+          radius: radius,
+        );
+
+        // Draw filled arc
+        var fillPaint = Paint()
+          ..color = colors[i].withOpacity(0.6)
+          ..style = PaintingStyle.fill;
+        canvas.drawArc(
+          arcRect,
+          startAngle,
+          endAngle - startAngle,
+          true,
+          fillPaint,
+        );
+
+        // Draw border line
+        var borderPaint = Paint()
+          ..color = Colors.black
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.0;
+        canvas.drawArc(
+          arcRect,
+          startAngle,
+          endAngle - startAngle,
+          true,
+          borderPaint,
+        );
+
+        // Draw text
+        TextSpan span = TextSpan(
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          text: items[i],
+        );
+        TextPainter tp = TextPainter(
+          text: span,
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        );
+        tp.layout();
+
+        // Calculate text position
+        final double textAngle = (startAngle + endAngle) / 2;
+        final double textRadius = radius - tp.height * 3; // Adjusted radius
+        final double textX = centerX + textRadius * cos(textAngle);
+        final double textY = centerY + textRadius * sin(textAngle);
+
+        // Rotate canvas for text drawing
+        canvas.save();
+        canvas.translate(textX, textY);
+        canvas.rotate(textAngle + pi / 40);
+        tp.paint(canvas, Offset(-tp.width / 2, -tp.height / 2));
+        canvas.restore();
+      }
     }
   }
 
