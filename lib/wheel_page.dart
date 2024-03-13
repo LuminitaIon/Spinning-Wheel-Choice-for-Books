@@ -5,7 +5,20 @@ import 'package:spinning_wheel/wheel_cubit.dart';
 
 import 'add_item_dialog.dart';
 
-class WheelPage extends StatelessWidget {
+class WheelPage extends StatefulWidget {
+  @override
+  _WheelPageState createState() => _WheelPageState();
+}
+
+class _WheelPageState extends State<WheelPage> with SingleTickerProviderStateMixin {
+  late WheelCubit _wheelCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _wheelCubit = context.read<WheelCubit>();
+    _wheelCubit.initAnimation(this);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +57,7 @@ class WheelPage extends StatelessWidget {
                             Colors.primaries[index % Colors.primaries.length],
                       ),
                       backgroundColor: Colors.grey,
+                      angle: _wheelCubit.wheelAngle,
                     );
                   }
                 },

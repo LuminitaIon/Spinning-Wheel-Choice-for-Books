@@ -6,11 +6,13 @@ class SpinPainter extends CustomPainter {
   final List<String> items;
   final List<Color> colors;
   final Color backgroundColor;
+  final double angle;
 
   const SpinPainter({
     required this.items,
     required this.colors,
     required this.backgroundColor,
+    required this.angle,
   });
 
   @override
@@ -54,13 +56,14 @@ class SpinPainter extends CustomPainter {
       tp.paint(canvas, Offset(textX, textY));
     } else {
       for (int i = 0; i < items.length; i++) {
-        final double startAngle = i * angle;
-        final double endAngle = (i + 1) * angle;
-        final Rect arcRect = Rect.fromCircle(
-          center: Offset(centerX, centerY),
-          radius: radius,
-        );
+        double startAngle = angle;
+        double endAngle = angle + 2 * pi / items.length;
 
+        for (int i = 0; i < items.length; i++) {
+          final Rect arcRect = Rect.fromCircle(
+            center: Offset(centerX, centerY),
+            radius: radius,
+          );
         // Draw filled arc
         var fillPaint = Paint()
           ..color = colors[i].withOpacity(0.6)
@@ -109,13 +112,14 @@ class SpinPainter extends CustomPainter {
         final double textY = centerY + textRadius * sin(textAngle);
 
         // Rotate canvas for text drawing
-        canvas.save();
-        canvas.translate(textX, textY);
-        canvas.rotate(textAngle + pi / 40);
-        tp.paint(canvas, Offset(-tp.width / 2, -tp.height / 2));
-        canvas.restore();
+          // Rotate canvas for text drawing
+          tp.paint(canvas, Offset(textX, textY));
+
+          startAngle = endAngle;
+          endAngle += 2 * pi / items.length;
       }
     }
+  }
   }
 
   @override

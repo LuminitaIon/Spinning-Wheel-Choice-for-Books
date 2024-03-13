@@ -5,8 +5,14 @@ class SpinWheel extends StatelessWidget {
   final List<String> items;
   final List<Color> colors;
   final Color backgroundColor;
+  final double angle;
 
-  const SpinWheel({required this.items, required this.colors, required this.backgroundColor});
+  const SpinWheel({
+    required this.items,
+    required this.colors,
+    required this.backgroundColor,
+    required this.angle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,12 @@ class SpinWheel extends StatelessWidget {
         width: 300,
         height: 300,
         child: CustomPaint(
-          painter: SpinPainter(items: items, colors: colors, backgroundColor: backgroundColor),
+          painter: SpinPainter(
+            items: items,
+            colors: colors,
+            backgroundColor: backgroundColor,
+            angle: angle,
+          ),
         ),
       ),
     );
